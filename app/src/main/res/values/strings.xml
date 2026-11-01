@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">妙计</string>
+    <string name="widget_desc">本月收支一览，一键记账</string>
+    <string name="auto_record_service_label">自动记账（通知监听）</string>
+    <string name="channel_auto_record">自动记账提醒</string>
+    <string name="channel_auto_record_desc">微信、支付宝支付通知的自动记账结果</string>
+</resources>

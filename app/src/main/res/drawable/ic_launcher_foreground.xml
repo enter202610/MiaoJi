@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- 白色闪电：妙计 = 又快又聪明 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M63.1,28 L76.1,48.8 L60.5,48.8 L52.7,80 L39.7,59.2 L55.3,59.2 Z" />
+    <!-- 对勾点缀：右下角，示意“记完” -->
+    <path
+        android:pathData="M63,72 L69,78 L80,66"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

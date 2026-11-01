@@ -1,0 +1,15 @@
+<resources>
+    <style name="Theme.InkLedger" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/window_bg</item>
+        <item name="android:statusBarColor">@color/window_bg</item>
+        <item name="android:navigationBarColor">@color/window_bg</item>
+    </style>
+
+    <!-- 小组件「记一笔」透明宿主：面板浮在桌面上，不进主界面 -->
+    <style name="Theme.InkLedger.Translucent" parent="Theme.InkLedger">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+</resources>

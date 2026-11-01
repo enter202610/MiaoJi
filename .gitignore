@@ -1,0 +1,43 @@
+# Gradle
+.gradle/
+build/
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+captures/
+.externalNativeBuild/
+.cxx/
+
+# 本地环境配置（含 SDK 路径等，禁止提交）
+local.properties
+
+# 签名密钥（绝不提交）
+*.jks
+*.keystore
+keystore.properties
+
+# 输出产物
+*.apk
+*.aab
+*.ap_
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# Kotlin
+.kotlin/
+
+# 构建日志与临时输出
+build_out*.txt
+test_out.txt
+wrapper_out.txt
+
+# 剪影生成工具（涉及外部图片抓取，不入公开仓库）
+tools/
+
+# Python
+__pycache__/
+*.pyc
+

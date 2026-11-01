@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>妙计 MiaoJi · 离线优先的 Android 记账应用</title>
+<meta name="description" content="好记性，不如妙计 —— 离线记账、语音记账、目标打卡、倒数日、桌面小组件、加密备份。所有数据仅保存在本机。">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0d1017;
+    --card: #161b24;
+    --line: #232a36;
+    --text: #e8ecf2;
+    --muted: #8b94a5;
+    --a1: #6c63f1;
+    --a2: #22c8e6;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  .glow {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(600px 400px at 15% -5%, rgba(108,99,241,.18), transparent 60%),
+      radial-gradient(700px 450px at 90% 0%, rgba(34,200,230,.14), transparent 60%);
+  }
+  .wrap { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 0 24px; }
+  header { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; }
+  .logo .dot {
+    width: 34px; height: 34px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--a1), var(--a2));
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+  }
+  header a.src { color: var(--muted); text-decoration: none; font-size: 14px; }
+  header a.src:hover { color: var(--text); }
+  .hero { text-align: center; padding: 72px 0 40px; }
+  .hero h1 { font-size: 46px; letter-spacing: 1px; }
+  .hero h1 span {
+    background: linear-gradient(120deg, var(--a1), var(--a2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero .slogan { font-size: 20px; color: var(--muted); margin-top: 10px; }
+  .hero .sub { color: var(--muted); margin-top: 18px; font-size: 15px; }
+  .btns { margin-top: 34px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 30px; border-radius: 14px; text-decoration: none;
+    font-size: 16px; font-weight: 600; transition: transform .15s, box-shadow .15s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn.main {
+    color: #fff;
+    background: linear-gradient(135deg, var(--a1), var(--a2));
+    box-shadow: 0 8px 28px rgba(80,120,246,.35);
+  }
+  .btn.ghost { color: var(--text); border: 1px solid var(--line); background: var(--card); }
+  .note { margin-top: 14px; color: var(--muted); font-size: 13px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; padding: 46px 0 20px; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px;
+    transition: transform .15s, border-color .15s;
+  }
+  .card:hover { transform: translateY(-3px); border-color: #313b4d; }
+  .card .ic { font-size: 26px; }
+  .card h3 { font-size: 16px; margin: 10px 0 6px; }
+  .card p { color: var(--muted); font-size: 14px; }
+  h2.sec { text-align: center; font-size: 26px; padding-top: 40px; }
+  p.secdesc { text-align: center; color: var(--muted); margin-top: 8px; }
+  .privacy {
+    margin: 44px 0; padding: 26px; border-radius: 16px; text-align: center;
+    background: linear-gradient(135deg, rgba(108,99,241,.12), rgba(34,200,230,.10));
+    border: 1px solid var(--line);
+  }
+  .privacy h3 { font-size: 18px; }
+  .privacy p { color: var(--muted); margin-top: 8px; font-size: 14px; }
+  footer {
+    border-top: 1px solid var(--line); margin-top: 40px; padding: 26px 0 40px;
+    display: flex; justify-content: space-between; color: var(--muted); font-size: 13px; flex-wrap: wrap; gap: 8px;
+  }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--text); }
+  @media (max-width: 640px) { .hero h1 { font-size: 34px; } }
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="wrap">
+  <header>
+    <div class="logo"><div class="dot">🧮</div> 妙计 MiaoJi</div>
+    <a class="src" href="https://github.com/enter202610/MiaoJi" target="_blank">GitHub 仓库 ↗</a>
+  </header>
+
+  <div class="hero">
+    <h1>好记性，不如<span>妙计</span></h1>
+    <div class="slogan">离线优先的 Android 记账应用</div>
+    <div class="sub">无广告 · 无账号 · 所有数据仅保存在你自己的手机里</div>
+    <div class="btns">
+      <a class="btn main" href="https://github.com/enter202610/MiaoJi/releases/latest">⬇ 下载最新版本</a>
+      <a class="btn ghost" href="https://github.com/enter202610/MiaoJi">⭐ GitHub 源码</a>
+    </div>
+    <div class="note">Android 8.0+ · MIT 开源 · 免费使用</div>
+  </div>
+
+  <div class="grid">
+    <div class="card"><div class="ic">🎤</div><h3>语音记账</h3><p>说一句「晚饭二十五」自动记一笔，全面覆盖中文口语数字与各种表达。</p></div>
+    <div class="card"><div class="ic">⚡</div><h3>记账提速四件套</h3><p>面板宫格 / 一句话解析 / 模板一键 / 支付通知自动记账，3 秒记完。</p></div>
+    <div class="card"><div class="ic">📊</div><h3>精确统计</h3><p>分类占比、近半年趋势、环比数据，金额精确到分，绝不糊弄。</p></div>
+    <div class="card"><div class="ic">🎯</div><h3>目标与打卡</h3><p>存钱目标进度、习惯打卡连击与历史补签、倒数日置顶提醒。</p></div>
+    <div class="card"><div class="ic">📱</div><h3>桌面小组件</h3><p>收支 / 倒数日 / 打卡五款组件，桌面直接记账打卡，背景随心换。</p></div>
+    <div class="card"><div class="ic">🔐</div><h3>加密备份</h3><p>密码加密的全量备份，可含图片；误删 7 天内回收站找回。</p></div>
+  </div>
+
+  <div class="privacy">
+    <h3>🔒 隐私是底线</h3>
+    <p>没有账号体系、没有统计 SDK、默认不联网。唯一的联网开关是你在设置里主动开启「大模型问答」并填入自己的 API Key。<br>你的账单，只属于你。</p>
+  </div>
+
+  <footer>
+    <div>© 2026 妙计 MiaoJi · MIT License</div>
+    <div><a href="https://github.com/enter202610/MiaoJi">GitHub</a> · <a href="https://github.com/enter202610/MiaoJi/releases">下载历史版本</a></div>
+  </footer>
+</div>
+</body>
+</html>
