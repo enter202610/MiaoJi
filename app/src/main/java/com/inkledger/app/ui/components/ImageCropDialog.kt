@@ -161,20 +161,30 @@ fun ImageCropDialog(
                 }
             }
             if (aspect != null) {
-                // 框外压暗 + 白框标界（画在照片之上，遮住溢出部分）
-                Canvas(
-                    Modifier
-                        .fillMaxSize()
-                        .graphicsLayer(
-                            compositingStrategy = androidx.compose.ui.graphics.CompositingStrategy.Offscreen
-                        )
-                ) {
-                    drawRect(Color.Black.copy(alpha = 0.55f))
+                // 框外压暗：四块矩形拼出框外区域（不用 BlendMode.Clear——部分设备上会整层变黑）
+                Canvas(Modifier.fillMaxSize()) {
+                    val sc = Color.Black.copy(alpha = 0.5f)
+                    drawRect(sc, size = androidx.compose.ui.geometry.Size(size.width, frameT))
                     drawRect(
-                        Color.Transparent,
-                        topLeft = androidx.compose.ui.geometry.Offset(frameL, frameT),
-                        size = androidx.compose.ui.geometry.Size(frameW, frameH),
-                        blendMode = androidx.compose.ui.graphics.BlendMode.Clear
+                        sc,
+                        topLeft = androidx.compose.ui.geometry.Offset(0f, frameT + frameH),
+                        size = androidx.compose.ui.geometry.Size(
+                            size.width,
+                            (size.height - frameT - frameH).coerceAtLeast(0f)
+                        )
+                    )
+                    drawRect(
+                        sc,
+                        topLeft = androidx.compose.ui.geometry.Offset(0f, frameT),
+                        size = androidx.compose.ui.geometry.Size(frameL, frameH)
+                    )
+                    drawRect(
+                        sc,
+                        topLeft = androidx.compose.ui.geometry.Offset(frameL + frameW, frameT),
+                        size = androidx.compose.ui.geometry.Size(
+                            (size.width - frameL - frameW).coerceAtLeast(0f),
+                            frameH
+                        )
                     )
                     drawRect(
                         Color.White.copy(alpha = 0.85f),

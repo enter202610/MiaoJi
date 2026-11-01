@@ -1,4 +1,4 @@
-package com.inkledger.app.ui.settings
+﻿package com.inkledger.app.ui.settings
 
 import android.Manifest
 import android.content.Intent
@@ -51,6 +51,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -151,16 +152,13 @@ fun SettingsScreen(
     )
 
     fun pickTheme(p: ThemePreset) {
+        android.util.Log.d("InkTheme", "pick $p bgEnabled=${settings.bgEnabled} bgGradient=${settings.bgGradient}")
         vm.setTheme(p)
-        // 选内置主题 = 自动清除自定义背景和渐变
-        if (settings.bgEnabled) {
-            com.inkledger.app.data.media.BackgroundManager.clear(context)
-            vm.setBgEnabled(false)
-        }
-        if (settings.bgGradient != -1) {
-            vm.setBgGradient(-1)
-            onMessage("已切换主题")
-        }
+        // 选内置主题 = 无条件清除自定义背景和渐变（渐变优先级高于主题色，不清会挡住切换效果）
+        com.inkledger.app.data.media.BackgroundManager.clear(context)
+        vm.setBgEnabled(false)
+        vm.setBgGradient(-1)
+        onMessage("已切换主题")
     }
 
     LazyColumn(Modifier.fillMaxSize()) {
@@ -411,15 +409,20 @@ fun SettingsScreen(
                         }
                     )
                     if (settings.bgEnabled) {
+                        // 本地滑杆状态：拖动流畅预览，松手才提交（每帧写库会和状态回写打架导致滑不动）
+                        var bgBlurLocal by remember(settings.bgBlur) {
+                            mutableFloatStateOf(settings.bgBlur.toFloat())
+                        }
                         Column(Modifier.padding(horizontal = 16.dp, vertical = 4.dp)) {
                             Text(
-                                "毛玻璃模糊 ${settings.bgBlur}%（拖动实时预览↓）",
+                                "毛玻璃模糊 ${bgBlurLocal.toInt()}%（拖动实时预览↓，松手保存）",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             androidx.compose.material3.Slider(
-                                value = settings.bgBlur.toFloat(),
-                                onValueChange = { vm.setBgBlur(it.toInt()) },
+                                value = bgBlurLocal,
+                                onValueChange = { bgBlurLocal = it },
+                                onValueChangeFinished = { vm.setBgBlur(bgBlurLocal.toInt()) },
                                 valueRange = 0f..100f,
                                 modifier = Modifier.fillMaxWidth()
                             )
@@ -450,11 +453,11 @@ fun SettingsScreen(
                                         modifier = Modifier
                                             .fillMaxSize()
                                             .then(
-                                                if (settings.bgBlur > 0 && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                                                if (bgBlurLocal > 0 && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
                                                     Modifier.graphicsLayer {
                                                         renderEffect = android.graphics.RenderEffect.createBlurEffect(
-                                                            settings.bgBlur / 100f * 60f,
-                                                            settings.bgBlur / 100f * 60f,
+                                                            bgBlurLocal / 100f * 60f,
+                                                            bgBlurLocal / 100f * 60f,
                                                             android.graphics.Shader.TileMode.CLAMP
                                                         ).asComposeRenderEffect()
                                                     }
@@ -467,7 +470,7 @@ fun SettingsScreen(
                                         Modifier
                                             .fillMaxSize()
                                             .background(
-                                                Color.Black.copy(alpha = 0.18f + 0.4f * (settings.bgBlur / 100f))
+                                                Color.Black.copy(alpha = 0.18f + 0.4f * (bgBlurLocal / 100f))
                                             )
                                     )
                                 }
