@@ -154,7 +154,14 @@ fun SettingsScreen(
     fun pickTheme(p: ThemePreset) {
         android.util.Log.d("InkTheme", "pick $p bgEnabled=${settings.bgEnabled} bgGradient=${settings.bgGradient}")
         vm.setTheme(p)
-        // 只应用主题色：渐变 / 自定义图 / 是否跟随等背景设置保持不变
+        // 选内置主题 = 自动清除自定义背景和渐变，背景恢复主题默认（以前的效果）
+        if (settings.bgEnabled) {
+            com.inkledger.app.data.media.BackgroundManager.clear(context)
+            vm.setBgEnabled(false)
+        }
+        if (settings.bgGradient != -1) {
+            vm.setBgGradient(-1)
+        }
         onMessage("已切换主题")
     }
 
