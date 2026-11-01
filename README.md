@@ -2,6 +2,8 @@
 
 > 好记性，不如妙计 —— 深色质感、低视觉压力的**离线优先** Android 记账应用。无广告、数据全部保存在本机。
 
+**🌐 官网 / 最新版下载：[https://enter202610.github.io/MiaoJi/](https://enter202610.github.io/MiaoJi/)**
+
 <!-- 截图占位：截图放入 /screenshots 目录后取消注释
 <p align="center">
   <img src="screenshots/home.png" width="270" />
