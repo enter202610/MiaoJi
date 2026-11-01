@@ -126,7 +126,7 @@ fun InkBackdrop(
 ) {
     val context = LocalContext.current
     val bmp by produceState<Bitmap?>(initialValue = null, bgEnabled, bgVersion) {
-        if (bgEnabled && bgGradient < 0) {
+        if (bgEnabled) {
             value = withContext(Dispatchers.IO) {
                 BackgroundManager.loadProcessed(
                     context, Resources.getSystem().displayMetrics.widthPixels, 0
@@ -137,8 +137,8 @@ fun InkBackdrop(
         }
     }
     Box(Modifier.fillMaxSize()) {
-        // 1) 全屏渐变背景（优先级最高，选了渐变就不用图片）
-        if (bgGradient >= 0 && bgGradient < com.inkledger.app.ui.theme.APP_GRADIENTS.size) {
+        // 1) 全屏渐变背景（与自定义图片互斥：后选的生效）
+        if (!bgEnabled && bgGradient >= 0 && bgGradient < com.inkledger.app.ui.theme.APP_GRADIENTS.size) {
             Box(
                 Modifier
                     .fillMaxSize()
@@ -151,7 +151,7 @@ fun InkBackdrop(
         }
         // 2) 自定义图片 + 精致毛玻璃（图片固定不动铺满全屏，模糊度滑杆控制）
         val b = bmp
-        if (b != null && bgGradient < 0) {
+        if (b != null) {
             Image(
                 b.asImageBitmap(),
                 contentDescription = null,

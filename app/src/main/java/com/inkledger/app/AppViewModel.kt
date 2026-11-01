@@ -480,6 +480,8 @@ suspend fun getNote(id: Long): NoteEntity? = db.noteDao().getById(id)
     }
     fun setBgGradient(v: Int) = viewModelScope.launch {
         prefs.setBgGradient(v)
+        // 渐变与自定义图互斥：后选的生效
+        if (v >= 0) prefs.setBgEnabled(false)
         // 全屏渐变换色 → 小组件背景立即同步
         refreshWidgets()
     }

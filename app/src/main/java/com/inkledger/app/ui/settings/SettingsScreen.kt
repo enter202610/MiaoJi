@@ -154,10 +154,7 @@ fun SettingsScreen(
     fun pickTheme(p: ThemePreset) {
         android.util.Log.d("InkTheme", "pick $p bgEnabled=${settings.bgEnabled} bgGradient=${settings.bgGradient}")
         vm.setTheme(p)
-        // 选内置主题 = 无条件清除自定义背景和渐变（渐变优先级高于主题色，不清会挡住切换效果）
-        com.inkledger.app.data.media.BackgroundManager.clear(context)
-        vm.setBgEnabled(false)
-        vm.setBgGradient(-1)
+        // 只应用主题色：渐变 / 自定义图 / 是否跟随等背景设置保持不变
         onMessage("已切换主题")
     }
 
@@ -333,7 +330,7 @@ fun SettingsScreen(
                         modifier = Modifier.padding(start = 16.dp, top = 10.dp)
                     )
                     Text(
-                        "选择一款全屏渐变色铺满整个 App（优先于自定义图片）",
+                        "选择一款全屏渐变色铺满整个 App（与自定义图片二选一，后选的生效）",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
                         modifier = Modifier.padding(start = 16.dp, bottom = 6.dp)
@@ -1042,6 +1039,7 @@ fun SettingsScreen(
                 val ok = com.inkledger.app.data.media.BackgroundManager.saveBitmap(context, b)
                 if (ok) {
                     vm.setBgEnabled(true)
+                    vm.setBgGradient(-1)   // 自定义图直接顶掉渐变（互斥：后选的生效）
                     vm.setBgVersion(settings.bgVersion + 1)
                     onMessage("背景已应用")
                 }
